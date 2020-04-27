@@ -51,6 +51,16 @@ export class AuthService {
     return this.userService.userRepository.save(user);
   }
 
+  async changePassword(data: UserLoginDto): Promise<boolean> {
+    const hashPassword = this.hashPassword(data.password);
+    try {
+      await this.userService.userRepository.update({ username: data.username }, { ...hashPassword });
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
   private hashPassword(password: any) {
     var salt = crypto.randomBytes(128).toString('base64');
     var iterations = this.randomIterations();

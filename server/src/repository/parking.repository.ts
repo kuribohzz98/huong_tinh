@@ -5,9 +5,9 @@ import { EntityRepository } from 'typeorm';
 
 @EntityRepository(Parking)
 export class ParkingRepository extends BaseRepository<Parking, ParkingAttribute> {
-    
-    getParkings(parkingAttr: ParkingAttribute, pageOpts?: IPageOptions): Promise<Parking[]> {
+
+    getParkings(parkingAttr: ParkingAttribute, pageOpts?: IPageOptions): Promise<[Parking[], number]> {
         const page = this.getPageOpts(pageOpts);
-        return this.getByOptions(parkingAttr, null, page);
+        return this.findAndCount({ where: parkingAttr, ...page });
     }
 }

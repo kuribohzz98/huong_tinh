@@ -1,0 +1,97 @@
+<div class="row">
+  <div class="col-lg-8 col-md-6 col-sm-6">
+    <h3>Tổng chỗ đỗ: 4</h3>
+  </div>
+  <div class="col-lg-4 col-md-6 col-sm-6">
+    <h3>Còn trống: {{slotBlank}}</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6 col-md-6 col-sm-6" (click)="open(parking1.id)">
+    <div class="card card-stats card-parking">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div *ngIf="!!parking1.id" class="icon-big text-center icon-warning card-parking-icon">
+              <i class="nc-icon nc-delivery-fast text-warning"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Vị trí 1</p>
+              <p *ngIf="!!parking1.id" class="card-title">Có xe</p>
+              <p *ngIf="!parking1.id" class="card-title text-danger">Trống</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6" (click)="open(parking2.id)">
+    <div class="card card-stats card-parking">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div *ngIf="!!parking2.id" class="icon-big text-center icon-warning card-parking-icon">
+              <i class="nc-icon nc-delivery-fast text-danger"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Vị trí 2</p>
+              <p *ngIf="!!parking2.id" class="card-title">Có xe</p>
+              <p *ngIf="!parking2.id" class="card-title text-danger">Trống</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <div class="card card-stats card-parking" (click)="open(parking4.id)">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div *ngIf="!!parking3.id" class="icon-big text-center icon-warning card-parking-icon">
+              <i class="nc-icon nc-delivery-fast text-primary"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Vị trí 3</p>
+              <p *ngIf="!!parking3.id" class="card-title">Có xe</p>
+              <p *ngIf="!parking3.id" class="card-title text-danger">Trống</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6">
+    <div class="card card-stats card-parking" (click)="open(parking4.id)">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-5 col-md-4">
+            <div *ngIf="!!parking3.id" class="icon-big text-center icon-warning card-parking-icon">
+              <i class="nc-icon nc-delivery-fast text-success"></i>
+            </div>
+          </div>
+          <div class="col-7 col-md-8">
+            <div class="numbers">
+              <p class="card-category">Vị trí 4</p>
+              <p *ngIf="!!parking4.id" class="card-title">Có xe</p>
+              <p *ngIf="!parking4.id" class="card-title text-danger">Trống</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-container *ngFor="let notify of managerParkingService.notifications">
+  <div class="alert alert-dismissible fade show" [ngClass]="'alert-' + notify.color" role="alert">
+    <strong>Vị trí {{notify.position}}!</strong> Xe vừa ra khỏi chỗ đỗ ----------
+    <span>Tổng thời gian đỗ: {{notify.totalTime | datetimeToTime}}</span> ----------
+    <span>Thành tiền: {{notify.cost | number}}</span>
+  </div>
+</ng-container>

@@ -28,9 +28,8 @@ export class createParking1587354257714 implements MigrationInterface {
                     isNullable: true
                 },
                 {
-                    name: "time",
-                    type: "int",
-                    width: 11,
+                    name: "timeOut",
+                    type: "datetime",
                     isNullable: true
                 },
                 {

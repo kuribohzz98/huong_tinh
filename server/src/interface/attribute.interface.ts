@@ -7,7 +7,7 @@ export interface ParkingAttribute {
     id?: number;
     position?: number;
     status?: string;
-    time?: number;
+    timeOut?: Date;
     cost?: number;
     createdAt?: Date;
     updatedAt?: Date;

@@ -20,7 +20,7 @@ export class AuthController {
             }, 401)
         }
         return {
-            "message": "success"
+            message: "success"
         }
     }
 
@@ -35,5 +35,14 @@ export class AuthController {
             }, 401)
         }
         return user;
+    }
+
+    @Post('change-password')
+    async changePassword(@Body() userLogin: UserLoginDto) {
+        const user = await this.authService.changePassword(userLogin);
+        if (!user) {
+            return { message: 'faild' };
+        }
+        return { message: 'success' };
     }
 }

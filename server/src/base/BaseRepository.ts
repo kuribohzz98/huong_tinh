@@ -1,7 +1,7 @@
+import { Repository, ObjectLiteral, Connection, JoinOptions, FindManyOptions } from "typeorm";
 import { IPageOptions } from './../interface/attribute.interface';
 import { ModelConstants, AliasQuery } from './../constants/model.constants';
 import { BaseEntity } from './BaseEntity';
-import { Repository, ObjectLiteral, Connection, Brackets, JoinOptions, FindManyOptions } from "typeorm";
 
 export class BaseRepository<T extends BaseEntity<U>, U extends ObjectLiteral> extends Repository<T> {
     constructor(

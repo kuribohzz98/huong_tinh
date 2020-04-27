@@ -1,21 +1,26 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload, Ctx, MqttContext } from '@nestjs/microservices';
-import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { Server } from 'socket.io';
+import { SocketGetway } from './../getway/socket.getway';
+import { ParkingService } from './../service/parking.service';
+import { ESocketChannel } from './../constants/common.constants';
 
-@WebSocketGateway(81, {transports: ['websocket']})
-@Controller('mqtt')
+@Controller('Mqtt')
 export class MqttController {
     private logger = new Logger('MqttController');
 
-    @WebSocketServer()
-    server: Server;
-
-    constructor() {}
+    constructor(
+        private readonly socketGetway: SocketGetway,
+        private readonly parkingService: ParkingService
+    ) { }
 
     @MessagePattern('mai ba/qlx/#')
-    positionSubcribe(@Payload() data: any, @Ctx() context: MqttContext) {
-        this.logger.log(`Topic: ${context.getTopic()}`);
-
+    async positionSubcribe(@Payload() data: string, @Ctx() context: MqttContext) {
+        const topic = context.getTopic().split('/').pop();
+        const status = data == 'yes';
+        this.logger.log(`Topic: ${topic[topic.length - 1]}, Data: ${data}`);
+        const isChange = await this.parkingService.topicChange(+topic[topic.length - 1], status);
+        if (isChange) this.socketGetway.server.emit(ESocketChannel.HasChange, +topic[topic.length - 1]);
+        return;
     }
+
 }

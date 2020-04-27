@@ -29,6 +29,6 @@ async function bootstrap() {
   app.enableCors();
   initSwagger(app);
   app.listen(app.get(Providers.Port));
-  // initMqttMicroservice(app);
+  initMqttMicroservice(app);
 }
 bootstrap();

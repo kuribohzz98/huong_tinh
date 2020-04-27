@@ -1,0 +1,88 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div *ngIf="type == EAccountType.Remove">
+        <p>Bạn có chắc muốn xóa toàn khoản này</p>
+    </div>
+    <div *ngIf="type == EAccountType.EditRole">
+        <div class="row">
+            <div class="col-md-6">
+                <div ngbDropdown class="btn-group">
+                    <button class="btn btn-primary" id="dropdownBasic2" ngbDropdownToggle>Chọn quyền</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                        <button ngbDropdownItem *ngFor="let role of roles"
+                            (click)="changeRole(role.id)">{{role.code}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" style="margin-top: 20px;">
+                Quyền:&nbsp;&nbsp;&nbsp;&nbsp;{{formEditRole.value.code}}
+            </div>
+        </div>
+    </div>
+    <div *ngIf="type == EAccountType.ChangePassword">
+        <form [formGroup]="formChangePassword">
+            <div class="form-group">
+                <label>Mật khẩu mới</label>
+                <input type="password" class="form-control" formControlName="password">
+                <div *ngIf="formChangePassword.get('password').errors">
+                    <div *ngIf="formChangePassword.get('password').errors.minlength" class="text-danger">Mật khẩu phải lớn hơn 6 ký tự</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Nhập lại mật khẩu</label>
+                <input type="password" class="form-control" formControlName="confirmPassword">
+                <div *ngIf="formChangePassword.get('confirmPassword').errors">
+                    <div *ngIf="formChangePassword.get('confirmPassword').errors.minlength" class="text-danger">Mật khẩu phải lớn hơn 6 ký tự</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div *ngIf="type == EAccountType.Create">
+        <form [formGroup]="formCreate">
+            <div class="form-group">
+                <label>Tên đăng nhập</label>
+                <input type="text" class="form-control" formControlName="username">
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" class="form-control" formControlName="password">
+                <div *ngIf="formCreate.get('password').errors">
+                    <div *ngIf="formCreate.get('password').errors.minlength" class="text-danger">Mật khẩu phải lớn hơn 6 ký tự</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Nhập lại mật khẩu</label>
+                <input type="password" class="form-control" formControlName="confirmPassword">
+                <div *ngIf="formCreate.get('confirmPassword').errors">
+                    <div *ngIf="formCreate.get('confirmPassword').errors.minlength" class="text-danger">Mật khẩu phải lớn hơn 6 ký tự</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div ngbDropdown class="btn-group">
+                        <button class="btn btn-primary" id="dropdownBasic2" ngbDropdownToggle>Chọn quyền</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                            <button ngbDropdownItem *ngFor="let role of roles"
+                                (click)="changeRole(role.id)">{{role.code}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="margin-top: 20px;">
+                    Quyền:&nbsp;&nbsp;&nbsp;&nbsp;{{formCreate.value.role}}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="onSubmit()"
+        [disabled]="type == EAccountType.EditRole ? formEditRole.invalid : (type == EAccountType.ChangePassword ? formChangePassword.invalid : (type == EAccountType.Create ? formCreate.invalid : false))">
+        {{buttonSuccesText}}
+    </button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Đóng</button>
+</div>

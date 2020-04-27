@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <h4 class="modal-title">Đăng nhập</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form [formGroup]="loginFrom" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
+        <div class="form-group">
+            <label>Tên đăng nhập</label>
+            <input type="text" class="form-control" formControlName="username" placeholder="Tên đăng nhập">
+        </div>
+        <div class="form-group">
+            <label>Mật khẩu</label>
+            <input type="password" class="form-control" formControlName="password" placeholder="Mật khẩu">
+            <div *ngIf="loginFrom.get('password').errors">
+                <div *ngIf="loginFrom.get('password').errors.minlength" class="text-danger">Mật khẩu phải lớn hơn 6 ký
+                    tự</div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-danger">Đăng nhập</button>
+        <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Đóng</button>
+    </div>
+</form>

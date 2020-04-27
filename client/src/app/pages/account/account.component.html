@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-8">
+            <h4 class="card-title">Quản lý tài khoản</h4>
+          </div>
+          <div class="col-md-4">
+            <button class="btn btn-danger" (click)="openCreateAccount()">Tạo tài khoản</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <th scope="col" class="text-center">#</th>
+              <th scope="col" class="text-center">Tên đăng nhập</th>
+              <th scope="col" class="text-center">Quyển người dùng</th>
+              <th scope="col" class="text-center"></th>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let account of accounts; let i=index">
+                <tr>
+                  <th scope="row" class="text-center">{{i+1}}</th>
+                  <td class="text-center">{{account.username}}</td>
+                  <td class="text-center">{{account.role}}</td>
+                  <td class="text-center">
+                    <button class="btn btn-primary btn-link" style="font-size: 25px;" placement="top"
+                      ngbTooltip="Sửa quyền" (click)="openEditRoleModal(account.id)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button class="btn btn-warning btn-link" style="font-size: 25px;" placement="top"
+                      ngbTooltip="Đổi mật khẩu" (click)="openChangePasswordModal(account.id)">
+                      <i class="fa fa-unlock"></i>
+                    </button>
+                    <button class="btn btn-danger btn-link" style="font-size: 25px;" placement="top" ngbTooltip="Xóa"
+                      (click)="openRemoveModal(account.id)">
+                      <i class="fa fa-remove"></i>
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <ngb-pagination class="d-flex justify-content-center" [collectionSize]="pageData.totalSize"
+        [pageSize]="pageData.pageSize" [(page)]="pageData.currentPage" [rotate]="true" maxSize="5"
+        aria-label="Default pagination" (pageChange)="pageChange($event)">
+      </ngb-pagination>
+    </div>
+  </div>
+</div>

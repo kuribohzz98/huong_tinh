@@ -1,6 +1,5 @@
 import { RoleConstant } from './../constants/model.constants';
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from './../entity/role.entity';
 import { User } from './../entity/user.entity';
 
 export class UserLoginDto {
@@ -25,10 +24,25 @@ export class UserRegisterDto {
 export class UserProfileDto {
     id: number;
     username: string;
-    role: Role;
+    role: string;
+
     constructor(user: User) {
         this.id = user.id;
         this.username = user.username;
-        this.role = user.role;
+        this.role = user.role.code;
     }
+}
+
+export class UserQuery {
+    @ApiProperty({required: false})
+    id: number;
+
+    @ApiProperty({required: false})
+    username: string;
+
+    @ApiProperty({required: false})
+    page: number;
+
+    @ApiProperty({required: false})
+    limit: number;
 }

@@ -3,21 +3,21 @@ import { ApiProperty } from "@nestjs/swagger";
 import { ParkingStatus } from './../constants/model.constants';
 
 export class ParkingQuery implements IPageOptions {
-    @ApiProperty({ type: 'number', required: false })
+    @ApiProperty({ required: false })
     position?: number;
 
-    @ApiProperty({ type: 'enum', enum: ParkingStatus, required: false })
+    @ApiProperty({ enum: ParkingStatus, required: false })
     status?: string;
 
-    @ApiProperty({ type: 'number', required: false })
-    time?: number;
+    @ApiProperty({ required: false })
+    timeOut?: Date;
 
-    @ApiProperty({ type: 'number', required: false })
+    @ApiProperty({ required: false })
     cost?: number;
 
-    @ApiProperty({ type: 'number', required: false })
+    @ApiProperty({ required: false })
     limit?: number;
 
-    @ApiProperty({ type: 'number', required: false })
+    @ApiProperty({ required: false })
     page?: number;
 }

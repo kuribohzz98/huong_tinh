@@ -27,11 +27,10 @@ export class Parking extends BaseEntity<ParkingAttribute> implements ParkingAttr
     status: string;
 
     @Column({
-        type: 'int',
-        width: 11,
+        type: 'datetime',
         nullable: true
     })
-    time: number;
+    timeOut: Date;
 
     @Column({
         type: 'int',

@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  host: 'https://89d0196c.ngrok.io',
+  host: 'http://localhost:3000',
   serverUrl: '/api/huong'
 };

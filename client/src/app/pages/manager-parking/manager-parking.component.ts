@@ -78,8 +78,11 @@ export class ManagerParkingComponent implements OnInit, OnDestroy {
                 if (position == 1 && this.parking1.id || position == 2 && this.parking2.id ||
                     position == 3 && this.parking3.id || position == 4 && this.parking4.id) {
                     this.parkingService.getOne(this[`parking${position}`].id).subscribe(parking => {
+                        let parking_temp = { ...parking };
+                        console.log(parking_temp);
+                        parking_temp.timeOut = new Date(new Date(parking_temp.timeOut).getTime() + new Date().getTimezoneOffset() * 1000 * 60);
                         this[`parking${position}`] = {};
-                        if (parking) this.managerParkingService.addNotification(parking);
+                        if (parking) this.managerParkingService.addNotification(parking_temp);
                         this.caculatorSlotBlank();
                     });
                 }

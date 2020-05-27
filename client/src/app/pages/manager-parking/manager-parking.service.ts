@@ -18,7 +18,7 @@ export class ManagerParkingService {
     }
 
     private randomColor(): NotifyType {
-        const random = Math.floor(Math.random() * 4) + 1;
+        const random = Math.floor(Math.random() * 3) + 1;
         if (this.preColor && this.preColor == random) {
             this.randomColor();
             return;
@@ -27,7 +27,6 @@ export class ManagerParkingService {
         switch (random) {
             case 1: return NotifyType.Info
             case 2: return NotifyType.Danger
-            case 3: return NotifyType.Success
             default: return NotifyType.Warning
         }
     }

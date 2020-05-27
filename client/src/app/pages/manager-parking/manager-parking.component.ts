@@ -1,7 +1,7 @@
 import { ManagerParkingService } from './manager-parking.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subject, Observable, of, forkJoin } from 'rxjs';
-import { takeUntil, mergeMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ParkingModalComponent } from './parking-modal/parking-modal.component';
 import { SocketService } from './../../shared/service/socket.service';
@@ -33,8 +33,8 @@ export class ManagerParkingComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit(): void {
-        this.initParkings();
         this.initSocket();
+        this.initParkings();
     }
 
     private initParkings(): void {
@@ -51,39 +51,35 @@ export class ManagerParkingComponent implements OnInit, OnDestroy {
 
     private initSocket(): void {
         this.socketService.watchChannel(ESocketChannel.HasChange)
-            .pipe(
-                mergeMap((position: number) => {
-                    let parking: Observable<[IParking[], number]>;
-                    let parkingOut: Observable<IParking>;
-                    if (position == 1 && !this.parking1.id || position == 2 && !this.parking2.id ||
-                        position == 3 && !this.parking3.id || position == 4 && !this.parking4.id) {
-                        parking = this.parkingService.get({ status: EStatusParking.PARKED, position });
-                    }
-                    if (position == 1 && this.parking1.id || position == 2 && this.parking2.id ||
-                        position == 3 && this.parking3.id || position == 4 && this.parking4.id) {
-                        parkingOut = this.parkingService.getOne(this[`parking${position}`].id);
-                    }
-                    return forkJoin(of(position), parking, parkingOut)
-                }),
-                takeUntil(this._destroys$)
-            )
-            .subscribe(data => {
-                if (data[2]) this.managerParkingService.addNotification(data[2]);
-                if (data[0] == 1) {
-                    if (data[1]) this.parking1 = data[1][0].pop();
-                    else this.parking1 = {};
+            .pipe(takeUntil(this._destroys$))
+            .subscribe((position: number) => {
+                if (position == 1 && !this.parking1.id || position == 2 && !this.parking2.id ||
+                    position == 3 && !this.parking3.id || position == 4 && !this.parking4.id) {
+                    this.parkingService.get({ status: EStatusParking.PARKED, position }).subscribe(parkings => {
+                        if (position == 1) {
+                            if (parkings) this.parking1 = parkings[0].pop();
+                            else this.parking1 = {};
+                        }
+                        if (position == 2) {
+                            if (parkings) this.parking2 = parkings[0].pop();
+                            else this.parking2 = {};
+                        }
+                        if (position == 3) {
+                            if (parkings) this.parking3 = parkings[0].pop();
+                            else this.parking3 = {};
+                        }
+                        if (position == 4) {
+                            if (parkings) this.parking4 = parkings[0].pop();
+                            else this.parking4 = {};
+                        }
+                    });
                 }
-                if (data[0] == 2) {
-                    if (data[1]) this.parking2 = data[1][0].pop();
-                    else this.parking2 = {};
-                }
-                if (data[0] == 3) {
-                    if (data[1]) this.parking3 = data[1][0].pop();
-                    else this.parking3 = {};
-                }
-                if (data[0] == 4) {
-                    if (data[1]) this.parking4 = data[1][0].pop();
-                    else this.parking4 = {};
+                if (position == 1 && this.parking1.id || position == 2 && this.parking2.id ||
+                    position == 3 && this.parking3.id || position == 4 && this.parking4.id) {
+                    this.parkingService.getOne(this[`parking${position}`].id).subscribe(parking => {
+                        this[`parking${position}`] = {};
+                        if (parking) this.managerParkingService.addNotification(parking);
+                    });
                 }
                 this.caculatorSlotBlank();
             });

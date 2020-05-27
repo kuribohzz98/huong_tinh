@@ -17,8 +17,8 @@ export class MqttController {
     async positionSubcribe(@Payload() data: string, @Ctx() context: MqttContext) {
         const topic = context.getTopic().split('/').pop();
         const status = data == 'yes';
-        this.logger.log(`Topic: ${topic[topic.length - 1]}, Data: ${data}`);
         const isChange = await this.parkingService.topicChange(+topic[topic.length - 1], status);
+        this.logger.log(`Topic: ${topic[topic.length - 1]}, Data: ${data}, isChange: ${isChange}`);
         if (isChange) this.socketGetway.server.emit(ESocketChannel.HasChange, +topic[topic.length - 1]);
         return;
     }

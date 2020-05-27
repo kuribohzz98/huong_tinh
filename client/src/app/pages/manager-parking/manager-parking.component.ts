@@ -72,6 +72,7 @@ export class ManagerParkingComponent implements OnInit, OnDestroy {
                             if (parkings) this.parking4 = parkings[0].pop();
                             else this.parking4 = {};
                         }
+                        this.caculatorSlotBlank();
                     });
                 }
                 if (position == 1 && this.parking1.id || position == 2 && this.parking2.id ||
@@ -79,9 +80,9 @@ export class ManagerParkingComponent implements OnInit, OnDestroy {
                     this.parkingService.getOne(this[`parking${position}`].id).subscribe(parking => {
                         this[`parking${position}`] = {};
                         if (parking) this.managerParkingService.addNotification(parking);
+                        this.caculatorSlotBlank();
                     });
                 }
-                this.caculatorSlotBlank();
             });
     }
 

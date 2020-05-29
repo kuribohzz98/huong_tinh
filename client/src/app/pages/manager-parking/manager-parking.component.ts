@@ -8,6 +8,7 @@ import { SocketService } from './../../shared/service/socket.service';
 import { ParkingService } from './../../service/parking.service';
 import { IParking } from './../../shared/models/parking.model';
 import { EStatusParking, ESocketChannel } from './../../constants/common.constants';
+import { AccountService } from './../../auth/account.service';
 
 @Component({
     selector: 'manager-parking-cmp',
@@ -29,7 +30,8 @@ export class ManagerParkingComponent implements OnInit, OnDestroy {
         private readonly modalService: NgbModal,
         private readonly socketService: SocketService,
         private readonly parkingService: ParkingService,
-        public readonly managerParkingService: ManagerParkingService
+        public readonly managerParkingService: ManagerParkingService,
+        private readonly accountService: AccountService
     ) { }
 
     ngOnInit(): void {
@@ -79,7 +81,6 @@ export class ManagerParkingComponent implements OnInit, OnDestroy {
                     position == 3 && this.parking3.id || position == 4 && this.parking4.id) {
                     this.parkingService.getOne(this[`parking${position}`].id).subscribe(parking => {
                         let parking_temp = { ...parking };
-                        console.log(parking_temp);
                         parking_temp.timeOut = new Date(new Date(parking_temp.timeOut).getTime() + new Date().getTimezoneOffset() * 1000 * 60);
                         this[`parking${position}`] = {};
                         if (parking) this.managerParkingService.addNotification(parking_temp);
@@ -98,7 +99,12 @@ export class ManagerParkingComponent implements OnInit, OnDestroy {
         this.slotBlank = slotBlank;
     }
 
+    get user() {
+        return this.accountService.userIdentity;
+    }
+
     open(id: number): void {
+        if (!this.user) return;
         const modalRef = this.modalService.open(ParkingModalComponent);
         modalRef.componentInstance.id = id;
     }

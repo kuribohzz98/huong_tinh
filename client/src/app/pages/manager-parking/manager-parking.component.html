@@ -88,10 +88,12 @@
     </div>
   </div>
 </div>
-<ng-container *ngFor="let notify of managerParkingService.notifications">
-  <div class="alert alert-dismissible fade show" [ngClass]="'alert-' + notify.color" role="alert">
-    <strong>Vị trí {{notify.position}}!</strong> Xe vừa ra khỏi chỗ đỗ ----------
-    <span>Tổng thời gian đỗ: {{notify.totalTime | datetimeToTime}}</span> ----------
-    <span>Thành tiền: {{notify.cost | number}}</span>
-  </div>
+<ng-container *ngIf="user">
+  <ng-container *ngFor="let notify of managerParkingService.notifications">
+    <div class="alert alert-dismissible fade show" [ngClass]="'alert-' + notify.color" role="alert">
+      <strong>Vị trí {{notify.position}}!</strong> Xe vừa ra khỏi chỗ đỗ ----------
+      <span>Tổng thời gian đỗ: {{notify.totalTime | datetimeToTime}}</span> ----------
+      <span>Thành tiền: {{notify.cost | number}}</span>
+    </div>
+  </ng-container>
 </ng-container>
